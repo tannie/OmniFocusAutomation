@@ -1,0 +1,48 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "Irizanjo",
+    "identifier": "nl.irizanjo.of.onetaskperday",
+    "version": "1.0",
+    "description": "This plug-in will complete the task and defer the next task in the project to tomorrow",
+    "label": "One task a day",
+    "shortLabel": "One task a day"
+}*/
+(() => {
+		var action = new PlugIn.Action(function(selection, sender){
+			// action code
+			// selection options: tasks, projects, folders, tags
+
+			var myTasks = document.windows[0].selection.tasks
+			myTasks.forEach(function(task){
+				task.markComplete();
+			});
+			
+			project = myTasks[0].containingProject
+			var projecttasks = project.tasks
+			if (projecttasks.length  > 0){
+				projecttasks.forEach(function(task){
+					if (task.next = true) {
+						var nexttask = task
+						nexttask.name
+						var formatter = Formatter.Date.withStyle(Formatter.Date.Style.Short)
+						var d = new Date();
+						var deferTom = formatter.dateFromString("tomorrow @ 9:30AM"); /* This sets the defer date to next Monday */
+						nexttask.deferDate = deferTom;
+
+					}	
+				})
+			}
+		});
+		
+		action.validate = function(selection, sender){
+			// validation code
+			// selection options: tasks, projects, folders, tags
+			return (
+				selection.tasks.length === 1 &&
+				(selection.tasks[0].containingProject != null)
+			)
+		};
+		
+		return action;
+})();
