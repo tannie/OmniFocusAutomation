@@ -13,25 +13,23 @@
 			// action code
 			// selection options: tasks, projects, folders, tags
 
-			var myTasks = document.windows[0].selection.tasks
+			var myTasks = selection.tasks
 			myTasks.forEach(function(task){
 				task.markComplete();
 			});
 			
 			project = myTasks[0].containingProject
 			var projecttasks = project.tasks
-			if (projecttasks.length  > 0){
-				projecttasks.forEach(function(task){
-					if (task.next = true) {
-						var nexttask = task
-						nexttask.name
-						var formatter = Formatter.Date.withStyle(Formatter.Date.Style.Short)
-						var d = new Date();
-						var deferTom = formatter.dateFromString("tomorrow @ 9:30AM"); /* This sets the defer date to next Monday */
-						nexttask.deferDate = deferTom;
-
-					}	
-				})
+			var tasks = projecttasks.filter(task => {
+				return task.taskStatus === Task.Status.Next
+			})
+			if (tasks.length  > 0){
+				tasks.forEach(task => {var formatter = Formatter.Date.withStyle(Formatter.Date.Style.Short)
+					var d = new Date();
+					var deferTom = formatter.dateFromString("tomorrow @ 8:30AM"); 			
+					task.deferDate = deferTom;
+				});
+				
 			}
 		});
 		
